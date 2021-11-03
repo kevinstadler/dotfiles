@@ -1,0 +1,3 @@
+#!/bin/sh
+
+cat "$1" | pandoc --from markdown --to html --template=default --pdf-engine-opt=--enable-local-file-access --metadata title="" --variable papersize=a4 -o "$1.pdf"
