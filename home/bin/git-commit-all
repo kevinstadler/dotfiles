@@ -4,18 +4,14 @@ if [ $# -ne 2 ]; then
   echo "Usage: git-push <-u|.|-A> <repo-root>"
   exit 1
 fi
+
 cd "$2"
+DATE=`date '+%F'`
+if [ ! -z `git log --after=$DATE` ]; then
+  DATE=`date '+%F %H:%M'`
+fi
 
 # git add -u stages modifications and deletions, without new files
 # git add -A stages all changes
 # git add . stages new files and modifications, without deletions (on the current directory and its subdirectories).
-git add "$1"
-
-DATE=`date '+%F'`
-if [ ! -z git log --after=$DATE ]; then
-  DATE=`date '+%F %H:%M'`"
-fi
-echo $DATE
-exit 1
-git commit -m "Automatic commit $DATE"
-git push
+git add "$1" && git commit -m "Automatic commit $DATE" && git push
