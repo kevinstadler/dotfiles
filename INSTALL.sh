@@ -5,13 +5,20 @@
 #  rm -fr $(brew --repo homebrew/core) && brew tap homebrew/core
 #done
 
-brew install bash
+# cli
+brew install bash bash-completion@2
 echo "/usr/local/bin/bash" | sudo tee -a /etc/shells
 chsh -s /usr/local/bin/bash
 
 brew install homeshick
 yes | homeshick clone kevinstadler/dotfiles
 yes | homeshick clone kevinstadler/taskwarrior-vit-config
+#pip3 install marko
+
+# for truncate
+brew install coreutils
+# for vipe
+brew install moreutils
 
 yes "" | ssh-keygen -t ed25519 -C "air2k17"
 ssh-add -K ~/.ssh/id_ed25519
@@ -26,9 +33,11 @@ brew install vit # includes taskwarrior, ssh,...
 brew install vim
 mkdir -p ~/.vim/pack/plugins/start
 cd ~/.vim/pack/plugins/start
-git clone git@github.com:vimwiki/vimwiki.git
+git clone git@github.com:vimwiki/vimwiki.git && cd vimwiki && git checkout dev
+git clone git@github.com:vim-airline/vim-airline.git
 git clone git@github.com:tpope/vim-commentary.git
 git clone git@github.com:tpope/vim-surround.git
+# need to run :helptags <dir> to rebuild help pages
 
 # messengers
 brew install --cask discord
@@ -41,13 +50,22 @@ brew install --cask arduino
 brew install --cask qgis
 #brew install --cask processing
 
-#brew install ffmpeg
+# brew install --cask ultimaker-cura
+brew install --cask blender
+brew install --cask unity-hub
+
 # to avoid building from source, search for last mojave bottles here: https://github.com/Homebrew/homebrew-core/find/master
 # creating your own tap still forces building from source...
 #brew tap-new $USER/oldbottles
 #brew extract --version="4.4_2" ffmpeg $USER/ffmpeg && brew install $USER/ffmpeg/ffmpeg@4.4_2
+
 # ...so force direct install from github url instead:
+#brew install ffmpeg
 brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/45dbd6f1218f65113d62f4a6ddbeb45bc27ba259/Formula/ffmpeg.rb"
+
+#brew install imagemagick
+brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/19e8fdd2de4e6e8efc49f987bbb10340e9c3a483/Formula/imagemagick.rb"
+brew install libomp liblqr
 
 ## pandoc dependency cabal-install@3.6.0.0 (--ignore-dependencies)
 #brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/a12c327a13371005f5d2c385230ee01a13362130/Formula/cabal-install.rb"
@@ -77,4 +95,6 @@ rm -rf TrueType*
 # entertainment/gaming
 brew install --cask vlc
 brew install --cask steam
+brew install --cask transmission # qbittorrent
 
+# TODO recover /var/spool/cron/$USER ?
