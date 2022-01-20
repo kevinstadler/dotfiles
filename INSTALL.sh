@@ -51,27 +51,71 @@ brew install --cask signal
 brew install --cask skype
 brew install --cask zoom
 
-# developing
-brew install --cask arduino
+# geodata
 brew install --cask qgis
+brew install spatialindex
+pip3 install geopandas rtree
+#brew install gdal
+# last Mojave bottle: 3.3.2
+#brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/ba26d5df1d61dd960223782b1059e48c6b8ca79c/Formula/gdal.rb"
+# gdal dependencies:
+brew install proj@7 json-c unixodbc xerces-c netcdf libgeotiff libdap nss szip minizip && brew link proj@7
+brew install --ignore-dependencies netcdf hdf5 libspatialite librttopo # don't install gcc
+# poppler 21.10.0
+brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/4ac805c13b62d527f5081146e3480665806f8254/Formula/poppler.rb"
+##brew install --ignore-dependencies geos
+# geos 3.9.1
+brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/d4cdb31aeaa36543f21c88ef55f16f984d56f49c/Formula/geos.rb"
+## cmake 3.21.3 (for geos compilation)
+##brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/ede05bb6167db53cb3fba59aef35b477d2b08a94/Formula/cmake.rb"
+
+# developing
+brew install ghc
+wget https://cran.r-project.org/bin/macosx/base/R-4.1.2.pkg
+
+# cmdg for gmail
+brew install lynx
+git clone git@github.com:ThomasHabets/cmdg.git && cd cmdg && go build ./cmd/cmdg
+
+wget https://github.com/pqrs-org/Karabiner-Elements/releases/download/v12.10.0/Karabiner-Elements-12.10.0.dmg
+brew install yqrashawn/goku/goku
+
+brew install --cask arduino
+mkdir -p Documents/Arduino/tools
+cd Documents/Arduino/tools
+wget https://github.com/me-no-dev/EspExceptionDecoder/releases/download/1.1.0/EspExceptionDecoder-1.1.0.zip
+unzip EspExceptionDecoder-1.1.0.zip
+cd
+
 #brew install --cask processing
 
-# brew install --cask ultimaker-cura
+brew install --cask ultimaker-cura
 brew install --cask blender
 brew install --cask unity-hub
+
+#brew install node # last Mojave bottle: 16.12.0 (17.* compile fails with overlapped-checker error)
+brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/ca46e03474277de13b5152c19e19ba1e309e1ee2/Formula/node.rb"
 
 # to avoid building from source, search for last mojave bottles here: https://github.com/Homebrew/homebrew-core/find/master
 # creating your own tap still forces building from source...
 #brew tap-new $USER/oldbottles
 #brew extract --version="4.4_2" ffmpeg $USER/ffmpeg && brew install $USER/ffmpeg/ffmpeg@4.4_2
 
+brew install --cask audacity
+
 # ...so force direct install from github url instead:
 #brew install ffmpeg
 brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/45dbd6f1218f65113d62f4a6ddbeb45bc27ba259/Formula/ffmpeg.rb"
 
-#brew install imagemagick
-brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/19e8fdd2de4e6e8efc49f987bbb10340e9c3a483/Formula/imagemagick.rb"
-brew install libomp liblqr
+# last Mojave bottle for mkvtoolnix is 53.0.0
+brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/c4ae8e0509201105bf91c2b7e5094c3bf1b5ca23/Formula/mkvtoolnix.rb"
+# requires fmt 7.*
+brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/f281a5c6130f9e333a768a990d1a2a6f9af694d9/Formula/fmt.rb"
+
+brew install imagemagick
+# Python bindings
+pip3 install Wand
+
 
 ## pandoc dependency cabal-install@3.6.0.0 (--ignore-dependencies)
 #brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/homebrew-core/a12c327a13371005f5d2c385230ee01a13362130/Formula/cabal-install.rb"
