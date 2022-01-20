@@ -35,9 +35,15 @@ mkdir -p ~/.vim/pack/plugins/start
 cd ~/.vim/pack/plugins/start
 git clone git@github.com:vimwiki/vimwiki.git && cd vimwiki && git checkout dev
 git clone git@github.com:vim-airline/vim-airline.git
+git clone https://github.com/airblade/vim-gitgutter.git
+git clone git@github.com:tpope/vim-fugitive.git
 git clone git@github.com:tpope/vim-commentary.git
 git clone git@github.com:tpope/vim-surround.git
-# need to run :helptags <dir> to rebuild help pages
+git clone --depth=1 https://github.com/ervandew/supertab.git
+git clone https://github.com/mattn/emmet-vim.git
+# need to run ":helptags ALL" to rebuild help pages
+
+brew install unar # rar
 
 # messengers
 brew install --cask discord

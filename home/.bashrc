@@ -7,7 +7,7 @@ alias lh="ll -h"
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH:/Applications/QGIS.app/Contents/MacOS/bin"
 
 # To enable the `homeshick cd <CASTLE>` command, you need to
 #   `export HOMESHICK_DIR=/usr/local/opt/homeshick`
@@ -17,3 +17,6 @@ export PATH="$HOME/bin:$PATH"
 
 export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
 [[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"
+
+export PAGER=less
+export EDITOR=vim
