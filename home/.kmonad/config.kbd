@@ -1,0 +1,108 @@
+(defcfg
+  ;; For MacOS
+  input  (iokit-name) ;; "my-keyboard-product-string")
+  output (kext)
+  ;; This option tells KMonad to let non-configured keys act normal
+  fallthrough true
+)
+
+;; https://github.com/kmonad/kmonad/blob/master/keymap/template/apple.kbd
+(defsrc
+  esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
+  tab  q    w    e    r    t    y    u    i    o    p    [    ]     \
+  caps a    s    d    f    g    h    j    k    l    ;    '    ret
+  lsft z    x    c    v    b    n    m    ,    .    /    rsft       up
+  fn   lctl lalt lmet           spc            rmet ralt left down rght
+)
+
+;; default layer
+(deflayer homerowmods
+  _    brdn brup lp   mctl bldn blup prev pp   next mute vold volu
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+@me_caps @sh_a _ @sy_d @me_f _  _ @me_j @sy_k  _  @sh_;  _    _
+ lctl  _    _    _    _    _    _    _    _    _    _    _         _
+  @fn  _    _    _              @spc           _    _    _    _    _
+)
+
+(defalias fn (around (layer-toggle function) fn))
+
+(deflayer function
+  _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _         _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer hidehomerowmods
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    1    2    3    4    5    6    7    8    9    0    -    =   bspc
+  _    q    w    e    r    t    y    u    i    o    p    [    ]    \
+  _    a    s    d    f    g    h    j    k    l    ;    '    ret
+  _    z    x    c    v    b    n    m    ,    .    /    rsft      up
+  _    _    _    _              spc            _    _    _    _    _
+)
+
+(deflayer spaceastab
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _         _
+  _    _    _    _              tab            _    _    _    _    _
+)
+(defalias ;; tap-hold arg is a (minimum) tapping term
+;;    sh_a (tap-hold 145 a lshift) ;; 140 too short for as rolls, 150 too long for : (two hand keying)
+;;    sh_; (tap-hold 145 ; rshift) ;; 140+
+    sh_a (tap-hold-next-release 300 a lshift)
+    sh_; (tap-hold-next-release 300 ; rshift)
+
+;;    al_s (tap-hold 180 s lalt)
+;;    al_l (tap-hold-next-release 300 l lalt)
+
+    sy_d (tap-hold-next-release 300 d (around (layer-toggle numlayer) (layer-toggle symlayer)))
+    sy_k (tap-hold-next-release 300 k (around (layer-toggle numlayer) (layer-toggle symlayer)))
+
+    ;; f trigger needs to be longish
+;;    me_f (tap-hold 150 f (around (layer-toggle spaceastab) lmeta)) ;; 150+
+;;    me_j (tap-hold 140 j (around (layer-toggle spaceastab) rmeta))
+    me_f (tap-hold-next-release 300 f (around (layer-toggle spaceastab) lmeta))
+    me_j (tap-hold-next-release 300 j (around (layer-toggle spaceastab) rmeta))
+
+    me_caps (around (layer-toggle spaceastab) lmeta)
+
+;;    spc (tap-hold 180 spc (layer-toggle navlayer))
+    spc (tap-hold-next-release 300 spc (layer-toggle navlayer))
+;;    num_j (tap-hold-next-release 300 j (layer-toggle numlayer))
+)
+
+
+(deflayer navlayer
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    esc  _    _    _    _ _ KeyBackspace KeyUp _ _    _    _    _
+  _    _   tab  C-tab  _ ent ent KeyLeft KeyDown KeyRight _ _ _
+  _    _    _    _    _    _    _    _    _    _    _    _         _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer numlayer
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    1    2    3    4    5    6    7    8    9    0    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _         _
+  _    _    _    _              _              _    _    _    _    _
+)
+
+(deflayer symlayer
+  _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  S-[  S-]   _
+  _    _    _    _    _    _    _   S-9  S-0   [    ]   S-'   _
+  _    _    _    _    _    _    _    _   S-,  S-.  S-/   _         _
+  _    _    _    _              _              _    _    _    _    _
+)
