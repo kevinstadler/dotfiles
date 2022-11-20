@@ -1,8 +1,13 @@
 #!/bin/sh
 
+if [ ! -f "$1" ]; then
+  echo "File does not exist"
+  exit 1
+fi
+
 # --resource-path= doesn't work with resource paths in html links, so gotta cd into `dirname $1`
 OUTDIR=$PWD
-( cd "`dirname $1`" &&
-# cat everything up to (but not including) the separator through to pandoc
-sed -n '/@@/q;p' "`basename $1`" |
+cd `dirname "$1"`
+( # cat everything up to (but not including) the separator through to pandoc
+sed -n '/@@/q;p' "`basename \"$1\"`" |
 pandoc --from markdown --to html --template=default --pdf-engine-opt=--enable-local-file-access --pdf-engine-opt=--no-background --variable papersize=a4 -o "$OUTDIR/`basename $1 .md`.pdf" )

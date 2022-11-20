@@ -9,6 +9,7 @@
 ;; https://github.com/kmonad/kmonad/blob/master/keymap/template/apple.kbd
 (defsrc
   esc  f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
+;;  esc  fn1  fn2  fn3  fn4  fn5  fn6  fn7  fn8  fn9  fn10 fn11 fn12
   grv  1    2    3    4    5    6    7    8    9    0    -    =    bspc
   tab  q    w    e    r    t    y    u    i    o    p    [    ]     \
   caps a    s    d    f    g    h    j    k    l    ;    '    ret
@@ -18,15 +19,16 @@
 
 ;; default layer
 (deflayer homerowmods
+;;  _    fn13 fn14 fn15 fn15 fn16 fn17 fn17 fn19 fn20 fn21 fn22 fn23
   _    brdn brup lp   mctl bldn blup prev pp   next mute vold volu
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-@me_caps @sh_a _ @sy_d @me_f _  _ @me_j @sy_k  _  @sh_;  _    _
- lctl  _    _    _    _    _    _    _    _    _    _    _         _
+ lctl @sh_a @al_s @sy_d @me_f _  _ @me_j @sy_k  _  @sh_;  _    _
+  _    _    _    _    _    _    _    _    _    _    _    _         _
   @fn  _    _    _              @spc           _    _    _    _    _
 )
 
-(defalias fn (around (layer-toggle function) fn))
+(defalias fn (around (layer-toggle function) Fn))
 
 (deflayer function
   _    f1   f2   f3   f4   f5   f6   f7   f8   f9   f10  f11  f12
@@ -54,37 +56,40 @@
   _    _    _    _    _    _    _    _    _    _    _    _         _
   _    _    _    _              tab            _    _    _    _    _
 )
-(defalias ;; tap-hold arg is a (minimum) tapping term
-;;    sh_a (tap-hold 145 a lshift) ;; 140 too short for as rolls, 150 too long for : (two hand keying)
-;;    sh_; (tap-hold 145 ; rshift) ;; 140+
-    sh_a (tap-hold-next-release 300 a lshift)
-    sh_; (tap-hold-next-release 300 ; rshift)
-
-;;    al_s (tap-hold 180 s lalt)
-;;    al_l (tap-hold-next-release 300 l lalt)
-
-    sy_d (tap-hold-next-release 300 d (around (layer-toggle numlayer) (layer-toggle symlayer)))
-    sy_k (tap-hold-next-release 300 k (around (layer-toggle numlayer) (layer-toggle symlayer)))
-
-    ;; f trigger needs to be longish
-;;    me_f (tap-hold 150 f (around (layer-toggle spaceastab) lmeta)) ;; 150+
-;;    me_j (tap-hold 140 j (around (layer-toggle spaceastab) rmeta))
-    me_f (tap-hold-next-release 300 f (around (layer-toggle spaceastab) lmeta))
-    me_j (tap-hold-next-release 300 j (around (layer-toggle spaceastab) rmeta))
-
+(defalias ;; tap-hold arg is a (minimum) tapping term, tap-hold-next-release a maximum
     me_caps (around (layer-toggle spaceastab) lmeta)
 
-;;    spc (tap-hold 180 spc (layer-toggle navlayer))
-    spc (tap-hold-next-release 300 spc (layer-toggle navlayer))
+    sh_a (tap-hold-next-release 160 a lshift) ;; 140 too short for as rolls, 150 too long for : (two hand keying)
+    sh_; (tap-hold-next-release 160 ; rshift) ;; 140+
+
+    al_s (tap-hold-next-release 180 s lalt)
+;;    al_l (tap-hold-next-release 300 l lalt)
+
+    sy_d (tap-hold-next-release 200 d (around (layer-toggle numlayer) (layer-toggle symlayer)))
+    sy_k (tap-hold-next-release 200 k (around (layer-toggle numlayer) (layer-toggle symlayer)))
+
+    ;; f trigger needs to be longish
+    me_f (tap-hold-next-release 150 f (around (layer-toggle spaceastab) lmeta)) ;; 150+
+    me_j (tap-hold-next-release 140 j (around (layer-toggle spaceastab) rmeta)) ;; 140
+
+    ;; meta+tab tap or hold meta
+    me_tab (tap-hold-next-release 150 (around lmeta tab) lmeta)
+
+    spc (tap-hold-next-release 200 spc (layer-toggle navlayer)) ;; 180?
+
 ;;    num_j (tap-hold-next-release 300 j (layer-toggle numlayer))
-)
+
+    ä (tap-macro A-u a)
+    ö (tap-macro A-u o)
+    ü (tap-macro A-u u)
+    sz A-s)
 
 
 (deflayer navlayer
   _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    esc  _    _    _    _ _ KeyBackspace KeyUp _ _    _    _    _
-  _    _   tab  C-tab  _ ent ent KeyLeft KeyDown KeyRight _ _ _
+  _    esc tab   _    _    _ _ KeyBackspace KeyUp _ _    _    _    _
+  _    _  lalt C-tab @me_tab ent ent KeyLeft KeyDown KeyRight _ _ _
   _    _    _    _    _    _    _    _    _    _    _    _         _
   _    _    _    _              _              _    _    _    _    _
 )
@@ -100,9 +105,9 @@
 
 (deflayer symlayer
   _    _    _    _    _    _    _    _    _    _    _    _    _
-  _    _    _    _    _    _    _    _    _    _    _    _    _    _
+  _    _    _    _    _    _    _    _    _    _    _   @sz   _    _
   _   S-1  S-2  S-3  S-4  S-5  S-6  S-7  S-8  S-9  S-0  S-[  S-]   _
-  _    _    _    _    _    _    _   S-9  S-0   [    ]   S-'   _
+  _    @ä  @sz   _    _    _    _   S-9  S-0   _   @ö   @ä   @ü
   _    _    _    _    _    _    _    _   S-,  S-.  S-/   _         _
   _    _    _    _              _              _    _    _    _    _
 )

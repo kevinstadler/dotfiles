@@ -73,6 +73,9 @@ brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/h
 brew install ghc
 wget https://cran.r-project.org/bin/macosx/base/R-4.1.2.pkg
 
+# brew install --cask serial
+brew install --cask serial-tools
+
 # cmdg for gmail
 brew install lynx
 git clone git@github.com:ThomasHabets/cmdg.git && cd cmdg && go build ./cmd/cmdg
@@ -92,6 +95,11 @@ cd
 brew install --cask ultimaker-cura
 brew install --cask blender
 brew install --cask unity-hub
+
+# brew install --cask androidtool
+# wget https://dl.google.com/android/repository/platform-tools-latest-darwin.zip
+
+brew install --cask zotero
 
 #brew install node # last Mojave bottle: 16.12.0 (17.* compile fails with overlapped-checker error)
 brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/ca46e03474277de13b5152c19e19ba1e309e1ee2/Formula/node.rb"
@@ -127,9 +135,18 @@ pip3 install Wand
 ## rust dependency cargo-c@0.9.4_1
 # brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/aace28c018fabc1b5246929e03bc8181c8ce2635/Formula/cargo-c.rb"
 
+brew install wine-stable
+
 # editing
 brew install ghostscript
-brew install pdftk-java
+# brew install pdftk-java
+pip install --user pdftools.pdfposter
+
+brew install --cask obsidian
+
+# for pdfjam
+#brew install --cask basictex
+
 brew install --cask scribus
 brew install --cask wkhtmltopdf
 # brew extract --version="2.14.2" pandoc $USER/oldbottles && brew install $USER/oldbottles/pandoc@2.14.2
@@ -142,9 +159,33 @@ unzip TrueType.zip
 mv TrueType/*/*.ttf .
 rm -rf TrueType*
 
+brew install --cask inkscape
+
 # entertainment/gaming
 brew install --cask vlc
 brew install --cask steam
 brew install --cask transmission # qbittorrent
 
 # TODO recover /var/spool/cron/$USER ?
+
+brew install --cask openscad
+
+## set preview printing to default to 100% instead of fit-to-page
+defaults write com.apple.Preview PVImagePrintingScaleMode -bool FALSE
+
+# for Lindabrunn
+brew install --cask oracle-jdk
+
+# for Jekyll
+brew install chruby ruby-install xz
+ruby-install ruby
+
+echo "source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh" >> ~/.bash_profile
+echo "source $(brew --prefix)/opt/chruby/share/chruby/auto.sh" >> ~/.bash_profile
+echo "chruby ruby-3.1.2" >> ~/.bash_profile # run 'chruby' to see actual version
+# https://github.com/jekyll/jekyll/issues/8523
+
+
+# QMK
+brew install avr-gcc avrdude lsusb
+brew install kicad
