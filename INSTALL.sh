@@ -70,6 +70,7 @@ brew install --ignore-dependencies "https://raw.githubusercontent.com/Homebrew/h
 ##brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/ede05bb6167db53cb3fba59aef35b477d2b08a94/Formula/cmake.rb"
 
 # developing
+brew install ant
 brew install ghc
 wget https://cran.r-project.org/bin/macosx/base/R-4.1.2.pkg
 
@@ -186,6 +187,15 @@ echo "chruby ruby-3.1.2" >> ~/.bash_profile # run 'chruby' to see actual version
 # https://github.com/jekyll/jekyll/issues/8523
 
 
+# OSX keyboard layout
+brew install --cask ukelele
+sudo cp symbols.keylayout /Library/Keyboard\ Layouts/
 # QMK
-brew install avr-gcc avrdude lsusb
+brew install avr-gcc@8 avrdude lsusb
+brew link --overwrite --force avr-gcc@8
 brew install kicad
+
+# https://github.com/innocenat/kindle-epub-fix
+
+# for blocking Adobe
+brew install --cask lulu

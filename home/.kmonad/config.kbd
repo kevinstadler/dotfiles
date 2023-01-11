@@ -23,7 +23,7 @@
   _    brdn brup lp   mctl bldn blup prev pp   next mute vold volu
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
   _    _    _    _    _    _    _    _    _    _    _    _    _    _
- lctl @sh_a @al_s @sy_d @me_f _  _ @me_j @sy_k  _  @sh_;  _    _
+ lctl @al_a @ct_s @me_d @sh_f _  _ @sh_j @me_k @ct_l @al_;  _    _
   _    _    _    _    _    _    _    _    _    _    _    _         _
   @fn  _    _    _              @spc           _    _    _    _    _
 )
@@ -59,18 +59,22 @@
 (defalias ;; tap-hold arg is a (minimum) tapping term, tap-hold-next-release a maximum
     me_caps (around (layer-toggle spaceastab) lmeta)
 
-    sh_a (tap-hold-next-release 160 a lshift) ;; 140 too short for as rolls, 150 too long for : (two hand keying)
-    sh_; (tap-hold-next-release 160 ; rshift) ;; 140+
+    al_a (tap-hold-next-release 160 a (around (layer-toggle spaceastab) lalt)) ;; 140 too short for as rolls, 150 too long for : (two hand keying)
+    al_; (tap-hold-next-release 160 ; (around (layer-toggle spaceastab) ralt)) ;; 140+
 
-    al_s (tap-hold-next-release 180 s lalt)
+;;    al_s (tap-hold-next-release 180 s lalt)
 ;;    al_l (tap-hold-next-release 300 l lalt)
-
-    sy_d (tap-hold-next-release 200 d (around (layer-toggle numlayer) (layer-toggle symlayer)))
-    sy_k (tap-hold-next-release 200 k (around (layer-toggle numlayer) (layer-toggle symlayer)))
+    ;;sy_s (tap-hold-next-release 200 s (around (layer-toggle numlayer) (layer-toggle symlayer)))
+    ;;sy_l (tap-hold-next-release 200 l (around (layer-toggle numlayer) (layer-toggle symlayer)))
+    ct_s (tap-hold-next-release 200 s (around (layer-toggle spaceastab) lctrl))
+    ct_l (tap-hold-next-release 200 l (around (layer-toggle spaceastab) lctrl))
 
     ;; f trigger needs to be longish
-    me_f (tap-hold-next-release 150 f (around (layer-toggle spaceastab) lmeta)) ;; 150+
-    me_j (tap-hold-next-release 140 j (around (layer-toggle spaceastab) rmeta)) ;; 140
+    me_d (tap-hold-next-release 180 d (around (layer-toggle spaceastab) lmet)) ;; de-roll at 150 triggers too often
+    me_k (tap-hold-next-release 180 k (around (layer-toggle spaceastab) rmet)) ;; 140
+
+    sh_f (tap-hold-next-release 200 f lshift)
+    sh_j (tap-hold-next-release 200 j rshift)
 
     ;; meta+tab tap or hold meta
     me_tab (tap-hold-next-release 150 (around lmeta tab) lmeta)

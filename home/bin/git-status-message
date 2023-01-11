@@ -1,0 +1,16 @@
+#!/bin/sh
+# LANG=C.UTF-8 or any UTF-8 English locale supported by your OS may be used
+STATUS=$(LANG=C /usr/local/bin/git -c color.status=false status --untracked-files=no --short )
+MSG=""
+for status in Added Modified Deleted Renamed; do
+  FILELIST=""
+  DELIM=""
+  files=$(echo "$STATUS" | sed -n -e "s/^${status:0:1}[[:blank:]]\{1,\}//p" | tr -d '"')
+  while IFS= read -r line; do
+    FILELIST="$FILELIST$DELIM$line"
+    DELIM=", "
+  done <<< "$files"
+  if [ ! -z "$FILELIST" ]; then
+    echo "$status $FILELIST"
+  fi
+done
