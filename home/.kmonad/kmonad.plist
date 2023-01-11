@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!-- sudo launchctl load -w path/to/kmonad.plist -->
+<!-- to work, this plist file needs to be in /Library/LaunchDaemons ! -->
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>kmonad</string>
+    <key>ProgramArguments</key>
+    <array>
+      <string>/Users/k/.local/bin/kmonad</string>
+      <string>-l</string><string>debug</string>
+      <string>/Users/k/.kmonad/config.kbd</string>
+    <!-- https://apple.stackexchange.com/questions/117148/how-do-i-get-my-launchagent-to-run-as-root -->
+      <!--string>bash</string>
+      <string>-c</string-->
+      <!-- <string>/usr/bin/sudo</string> -->
+      <!--string>/sbin/kextload /Library/Application\ Support/org.pqrs/Karabiner-VirtualHIDDevice/Extensions/org.pqrs.driver.Karabiner.VirtualHIDDevice.v061000.kext;/Users/k/.local/bin/kmonad /Users/k/.kmonad/config.kbd</string-->
+      <!-- <string>/Users/k/.kmonad/run.sh</string> -->
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StandardOutPath</key>
+    <string>/tmp/kmonad.stdout</string>
+    <key>StandardErrorPath</key>
+    <string>/tmp/kmonad.stderr</string>
+  </dict>
+</plist>
