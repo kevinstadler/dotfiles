@@ -14,9 +14,9 @@ filetype plugin on
 " filetype plugin indent off
 syntax enable
 " let black be black
-let g:dracula_colorterm = 0
-packadd! dracula
-colorscheme dracula
+"let g:dracula_colorterm = 0
+"packadd! dracula
+"colorscheme dracula
 
 " gitgutter
 highlight clear SignColumn
