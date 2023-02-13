@@ -11,7 +11,7 @@
     <array>
       <string>bash</string>
       <string>-c</string>
-      <string>cd /Users/k/vault &amp;&amp; /usr/local/bin/git add -A . &amp;&amp; /usr/local/bin/git commit -m "`/Users/k/bin/git-status-message`"</string>
+      <string>cd /Users/k/vault &amp;&amp; /usr/bin/git add -A . &amp;&amp; /usr/bin/git commit -m "`/Users/k/bin/git-status-message`"</string>
     </array>
     <key>StartCalendarInterval</key>
     <dict>

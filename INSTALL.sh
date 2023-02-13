@@ -14,17 +14,42 @@ brew install --cask zotero
 
 # design
 brew install --cask gimp inkscape scribus
+brew install fnt
+fnt update
+fnt install dseg
+
+cd ~/Library/Fonts
+wget "https://github.com/IBM/plex/releases/download/v6.1.1/TrueType.zip"
+unzip TrueType.zip
+mv TrueType/*/*.ttf .
+rm -rf TrueType*
+wget "https://www.cdnfonts.com/download/adobe-clean-cdnfonts.zip"
+unzip adobe-clean-cdnfonts.zip
+mv adobe-clean-cdnfonts/*.otf .
+rm -rf adobe-clean-cdnfonts*
+
 
 # 3d fabrication
 brew install --cask openscad prusaslicer ultimaker-cura
 brew install --cask kicad
 brew install --cask blender
+brew install --cask cycling74-max
 #brew install --cask unity-hub
 # brew install --cask androidtool
 # wget https://dl.google.com/android/repository/platform-tools-latest-darwin.zip
 
 # dev
 brew install wget
+brew install --cask balenaetcher
+brew install zsh-completions
+compaudit | xargs chmod g-w
+brew install dosfstools
+brew install --cask thonny
+brew install node
+brew install --cask android-studio
+
+brew install --cask android-platform-tools
+
 # qmk
 brew install qmk/qmk/qmk
 brew install avr-gcc #@8 avrdude lsusb
@@ -36,6 +61,10 @@ brew install --cask qmk-toolbox
 
 # vim + plugins
 #brew install vim
+# vim-plug
+curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
+    https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+
 mkdir -p ~/.vim/pack/plugins/start
 cd ~/.vim/pack/plugins/start
 #git clone git@github.com:vimwiki/vimwiki.git && cd vimwiki && git checkout dev
@@ -146,12 +175,6 @@ pip3 install Wand
 brew install wine-stable
 
 brew install "https://raw.githubusercontent.com/Homebrew/homebrew-core/849640e3a0db9942ac1b24a2b1c347cf7941b896/Formula/pandoc.rb"
-
-cd ~/Library/Fonts
-wget "https://github.com/IBM/plex/releases/download/v6.0.0/TrueType.zip"
-unzip TrueType.zip
-mv TrueType/*/*.ttf .
-rm -rf TrueType*
 
 # entertainment/gaming
 # brew install --cask steam

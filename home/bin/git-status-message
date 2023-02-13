@@ -1,6 +1,6 @@
 #!/bin/sh
 # LANG=C.UTF-8 or any UTF-8 English locale supported by your OS may be used
-STATUS=$(LANG=C /usr/local/bin/git -c color.status=false status --untracked-files=no --short )
+STATUS=$(LANG=C /usr/bin/git -c color.status=false status --untracked-files=no --short )
 MSG=""
 for status in Added Modified Deleted Renamed; do
   FILELIST=""
