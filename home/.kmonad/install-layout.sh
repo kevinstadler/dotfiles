@@ -1,2 +1,2 @@
 #!/bin/sh
-cp symbols.keylayout ~/Library/Keyboard\ Layouts/
+sudo cp symbols.keylayout /Library/Keyboard\ Layouts/

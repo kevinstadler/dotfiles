@@ -47,12 +47,14 @@ brew install dosfstools
 brew install --cask thonny
 brew install node
 brew install --cask android-studio
+brew install ant
 
 brew install --cask android-platform-tools
 
 # qmk
 brew install qmk/qmk/qmk
-brew install avr-gcc #@8 avrdude lsusb
+# the latter for piantor
+brew install avr-gcc arm-gcc-bin
 
 brew tap homebrew/cask-drivers
 brew install --cask qmk-toolbox
@@ -67,7 +69,6 @@ curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
 
 mkdir -p ~/.vim/pack/plugins/start
 cd ~/.vim/pack/plugins/start
-#git clone git@github.com:vimwiki/vimwiki.git && cd vimwiki && git checkout dev
 git clone git@github.com:vim-airline/vim-airline.git
 #git clone https://github.com/airblade/vim-gitgutter.git
 #git clone git@github.com:tpope/vim-fugitive.git
@@ -76,6 +77,8 @@ git clone git@github.com:tpope/vim-commentary.git
 #git clone --depth=1 https://github.com/ervandew/supertab.git
 #git clone https://github.com/mattn/emmet-vim.git
 # need to run ":helptags ALL" to rebuild help pages
+
+sudo npm install -g --unsafe-perm node-red
 
 # messengers
 brew install --cask discord signal zoom
@@ -144,6 +147,13 @@ brew install ant
 brew install ghc
 wget https://cran.r-project.org/bin/macosx/base/R-4.1.2.pkg
 
+brew install --cask sublime-text
+brew install ncftp
+
+# npm install -g import-js
+#brew install universal-ctags
+#brew install ripgrep
+
 # brew install --cask serial
 #brew install --cask serial-tools
 
@@ -155,6 +165,7 @@ wget https://github.com/pqrs-org/Karabiner-Elements/releases/download/v12.10.0/K
 brew install yqrashawn/goku/goku
 
 brew install --cask arduino
+brew install --cask arduino-ide # 2.*
 mkdir -p Documents/Arduino/tools
 cd Documents/Arduino/tools
 wget https://github.com/me-no-dev/EspExceptionDecoder/releases/download/1.1.0/EspExceptionDecoder-1.1.0.zip
