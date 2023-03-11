@@ -31,6 +31,50 @@ nmap ghs <Plug>(GitGutterStageHunk)
 nmap ghu <Plug>(GitGutterUndoHunk)
 
 
+call plug#begin()
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+  \ 'coc-tsserver'
+  \ ]
+Plug 'vim-airline/vim-airline'
+Plug 'tpope/vim-commentary'
+Plug 'ludovicchabant/vim-gutentags'
+Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
+call plug#end()
+
+
+
+
+
+
+" CoC: https://github.com/neoclide/coc.nvim#example-vim-configuration
+" " Add `:OR` command for organize imports of the current buffer
+command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
+" To make coc.nvim format your code on <cr>:
+inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use tab for trigger completion with characters ahead and navigate
+" NOTE: There's always complete item selected by default, you may want to enable
+" no select by `"suggest.noselect": true` in your configuration file
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+
+function! CheckBackspace() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+nmap <leader>do <Plug>(coc-codeaction)
+
+
+
+
+
 " When editing a file, always jump to the last known cursor position.
 autocmd BufReadPost *
   \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
@@ -45,6 +89,7 @@ set showcmd " show incomplete leader commands
 " execute on \\
 nnoremap <leader><leader> :!"%:p"<Enter>
 nnoremap <leader>q :q<Enter>
+nnoremap <leader>Q :q!<Enter>
 nnoremap <leader>w :w<Enter>
 nnoremap <leader>ww :w<Enter>
 nnoremap <leader>wq :wq<Enter>
