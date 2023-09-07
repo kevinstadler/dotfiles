@@ -24,3 +24,24 @@ if type brew &>/dev/null; then
   autoload -Uz compinit
   compinit
 fi
+source /usr/local/opt/chruby/share/chruby/chruby.sh
+source /usr/local/opt/chruby/share/chruby/auto.sh
+chruby ruby-3.2.1
+export PATH="/usr/local/opt/icu4c/bin:$PATH"
+# sudo ln -sfn $HOMEBREW_PREFIX/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+#export JAVA_HOME=$(/usr/libexec/java_home)
+export JAVA_HOME="/usr/local/opt/openjdk@17"
+#For the system Java wrappers to find this JDK, symlink it with
+  # sudo ln -sfn /usr/local/opt/openjdk@17/libexec/openjdk.jdk /Library/Java/JavaVirtualMachines/openjdk-17.jdk
+
+# openjdk@17 is keg-only, which means it was not symlinked into /usr/local,
+# because this is an alternate version of another formula.
+
+# If you need to have openjdk@17 first in your PATH, run:
+  # echo 'export PATH="/usr/local/opt/openjdk@17/bin:$PATH"' >> ~/.zshrc
+export PATH="/usr/local/opt/openjdk@17/bin:$PATH"
+
+# For compilers to find openjdk@17 you may need to set:
+export CPPFLAGS="-I/usr/local/opt/openjdk@17/include"
+
+export PATH="$HOME/bin:$PATH"

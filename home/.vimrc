@@ -11,25 +11,64 @@ set number relativenumber
 set backspace=indent,eol,start
 set nocompatible
 filetype plugin on
-" filetype plugin indent off
+filetype plugin indent on
 syntax enable
 " let black be black
 "let g:dracula_colorterm = 0
 "packadd! dracula
 "colorscheme dracula
 
+let mapleader=";"
+" map - <leader>
+set showcmd " show incomplete leader commands
+"nmap q <leader>ww
+"nmap s <leader>t+
+" execute on \\
+nnoremap <leader><leader> :!"%:p"<Enter>
+nnoremap <leader>q :q<Enter>
+nnoremap <leader>Q :q!<Enter>
+nnoremap <leader>w :w<Enter>
+nnoremap <leader>ww :w<Enter>
+nnoremap <leader>wq :wq<Enter>
+
+" alternatively: !./%<Enter>
+nnoremap <leader><Space> :!"%:p"<Enter>
+
+" 'untab' shortcut, now ignored/overridden by supertab...
+inoremap <S-Tab> <C-D>
+" save file https://vi.stackexchange.com/questions/8895/how-to-map-a-shortcut-for-saving-the-file/8897
+inoremap <C-S> <Esc>:update<CR>gi
+
+" disable ex mode (ZZ and ZQ still work for closing)
+nnoremap Q <nop>
+
+" tabline and tab navigation
+nnoremap t0 :tabfirst<CR>
+nnoremap t$ :tablast<CR>
+nnoremap tt :tabedit<Space>
+nnoremap TT :tabclose<CR>
+nnoremap <Tab> :tabnext<CR>
+nnoremap <S-Tab> :tabprev<CR>
+nnoremap <C-P> :! pdfreport %<CR>
+nnoremap <C-O> :! open %
+
+
 " gitgutter
-highlight clear SignColumn
+set signcolumn=number
 highlight GitGutterAdd ctermfg=2
 highlight GitGutterChange ctermfg=3
 highlight GitGutterDelete ctermfg=1
 " let g:gitgutter_sign_removed = '-'
 highlight GitGutterChangeDelete ctermfg=4
-nmap ]h <Plug>(GitGutterNextHunk)
-nmap [h <Plug>(GitGutterPrevHunk)
+nmap gj <Plug>(GitGutterNextHunk)
+nmap gk <Plug>(GitGutterPrevHunk)
 nmap ghs <Plug>(GitGutterStageHunk)
 nmap ghu <Plug>(GitGutterUndoHunk)
+nmap ghp <Plug>(GitGutterPreviewHunk)
 
+" nmap gd :GitGutterDiffOrig<CR>
+
+nnoremap <leader>gg :Git<CR>
 
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -38,6 +77,8 @@ let g:coc_global_extensions = [
   \ ]
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
 call plug#end()
@@ -81,39 +122,10 @@ autocmd BufReadPost *
   \ |   exe "normal! g`\""
   \ | endif
 
-let mapleader=";"
-map - <leader>
-set showcmd " show incomplete leader commands
-"nmap q <leader>ww
-"nmap s <leader>t+
-" execute on \\
-nnoremap <leader><leader> :!"%:p"<Enter>
-nnoremap <leader>q :q<Enter>
-nnoremap <leader>Q :q!<Enter>
-nnoremap <leader>w :w<Enter>
-nnoremap <leader>ww :w<Enter>
-nnoremap <leader>wq :wq<Enter>
-
-
-" 'untab' shortcut, now ignored/overridden by supertab...
-inoremap <S-Tab> <C-D>
-" save file https://vi.stackexchange.com/questions/8895/how-to-map-a-shortcut-for-saving-the-file/8897
-inoremap <C-S> <Esc>:update<CR>gi
-
-" disable ex mode (ZZ and ZQ still work for closing)
-nnoremap Q <nop>
-
-" tabline and tab navigation
-nnoremap t0 :tabfirst<CR>
-nnoremap t$ :tablast<CR>
-nnoremap tt :tabedit<Space>
-nnoremap TT :tabclose<CR>
-nnoremap <Tab> :tabnext<CR>
-nnoremap <S-Tab> :tabprev<CR>
-nnoremap <C-P> :! pdfreport %<CR>
-nnoremap <C-O> :! open %
 let g:airline#extensions#tabline#enabled = 1
 " show tab number instead of number of splits inside tab
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#branch#enabled = 1
+
 

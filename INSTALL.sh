@@ -32,6 +32,7 @@ rm -rf adobe-clean-cdnfonts*
 # 3d fabrication
 brew install --cask openscad prusaslicer ultimaker-cura
 brew install --cask kicad
+brew install --cask freecad
 brew install --cask blender
 brew install --cask cycling74-max
 #brew install --cask unity-hub
@@ -50,6 +51,10 @@ brew install --cask android-studio
 brew install ant
 
 brew install --cask android-platform-tools
+
+brew install --cask docker # --cask important!
+docker pull ghcr.io/esphome/esphome
+
 
 # qmk
 brew install qmk/qmk/qmk
@@ -202,9 +207,10 @@ brew install --cask oracle-jdk
 brew install chruby ruby-install xz
 ruby-install ruby
 
-echo "source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh" >> ~/.bash_profile
-echo "source $(brew --prefix)/opt/chruby/share/chruby/auto.sh" >> ~/.bash_profile
-echo "chruby ruby-3.1.2" >> ~/.bash_profile # run 'chruby' to see actual version
+echo "source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh" >> ~/.zshrc
+echo "source $(brew --prefix)/opt/chruby/share/chruby/auto.sh" >> ~/.zshrc
+echo "chruby ruby-3.2.1" >> ~/.zshrc # run 'chruby' to see actual version
+gem install jekyll
 # https://github.com/jekyll/jekyll/issues/8523
 
 
