@@ -1,26 +1,71 @@
+set nocompatible
+let mapleader="-"
+
+" DISPLAY
+syntax enable
+colorscheme torte
+" let black be black
+"let g:dracula_colorterm = 0
+"packadd! dracula
+"colorscheme dracula
+
+" show tabs (→)
+set listchars=tab:›\ ,trail:•
+set invlist
+" toggle tab display
+noremap <Leader><Tab> :set invlist<CR>
+set number relativenumber
+set backspace=indent,eol,start
+filetype plugin on
+filetype plugin indent on
+
+
+" INTERACTION
+set showcmd " show incomplete leader commands
 "set hlsearch
 set incsearch
 
+
+" EDITING
 set tabstop=2
 set shiftwidth=2
 " set expandtab " vimwiki doesn't correctly copy indentation of spaces unless expand is on...
 set copyindent " copy the previous indentation on autoindenting
 set autoindent " always set autoindenting on
 
-set number relativenumber
-set backspace=indent,eol,start
-set nocompatible
-filetype plugin on
-filetype plugin indent on
-syntax enable
-" let black be black
-"let g:dracula_colorterm = 0
-"packadd! dracula
-"colorscheme dracula
+set textwidth=80
+set formatoptions-=lo " also break lines that are already too long, but don't add when adding 'o'
+set formatoptions+=a/w " reformat paragraph on any change, but don't extend 1-line comments, and trailing whitespace means paragraph continues
 
-let mapleader=";"
-" map - <leader>
-set showcmd " show incomplete leader commands
+" COLEMAK
+" https://www.reddit.com/r/Colemak/comments/j98ds1/an_example_of_vim_key_remapping/
+" Colemak mnei(hjkl) t(i) <C-n>(f) <C-e>(e)
+noremap m h|        "move Left
+noremap n gj|       "move Down
+noremap e gk|       "move Up
+noremap i l|        "move Right
+noremap t i|        "(t)ype           replaces (i)nsert
+noremap T I|        "(T)ype at bol    replaces (I)nsert
+noremap E e|        "end of word      replaces (e)nd
+noremap h n|        "next match       replaces (n)ext
+noremap H N|        "previous match   replaces (N) prev
+" make easymotion match the new mnei(hjkl) motions
+map <Leader>m <Plug>(easymotion-linebackward)
+map <leader>n <Plug>(easymotion-j)
+map <leader>e <Plug>(easymotion-k)
+map <Leader>i <Plug>(easymotion-lineforward)
+" below: not remapping, just fixing sequences:
+" fix (i)nner and (t)ill, e.g. (c)hange (i)n (w)ord
+nnoremap ci ci|
+nnoremap di di|
+nnoremap vi vi|
+nnoremap yi yi|
+nnoremap ct ct|
+nnoremap dt dt|
+nnoremap vt vt|
+nnoremap yt yt|
+
+" MY NAV
 "nmap q <leader>ww
 "nmap s <leader>t+
 " execute on \\
@@ -43,15 +88,20 @@ inoremap <C-S> <Esc>:update<CR>gi
 nnoremap Q <nop>
 
 " tabline and tab navigation
-nnoremap t0 :tabfirst<CR>
-nnoremap t$ :tablast<CR>
-nnoremap tt :tabedit<Space>
+" nnoremap t0 :tabfirst<CR>
+" nnoremap t$ :tablast<CR>
+" nnoremap tt :tabedit<Space>
+nnoremap <leader>t :tabedit<Space>
+nnoremap <leader>f :tabedit<Space>
 nnoremap TT :tabclose<CR>
 nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabprev<CR>
 nnoremap <C-P> :! pdfreport %<CR>
 nnoremap <C-O> :! open %
 
+" edit/source .vimrc
+:nnoremap <leader>ev :tabedit $MYVIMRC<cr>
+:nnoremap <leader>iv :source $MYVIMRC<cr>
 
 " gitgutter
 set signcolumn=number
@@ -60,15 +110,42 @@ highlight GitGutterChange ctermfg=3
 highlight GitGutterDelete ctermfg=1
 " let g:gitgutter_sign_removed = '-'
 highlight GitGutterChangeDelete ctermfg=4
-nmap gj <Plug>(GitGutterNextHunk)
-nmap gk <Plug>(GitGutterPrevHunk)
-nmap ghs <Plug>(GitGutterStageHunk)
-nmap ghu <Plug>(GitGutterUndoHunk)
-nmap ghp <Plug>(GitGutterPreviewHunk)
+highlight DiffAdd ctermfg=2 ctermbg=NONE
+highlight DiffChange ctermfg=3 ctermbg=NONE
+highlight DiffDelete ctermfg=1 ctermbg=NONE
+highlight DiffText ctermfg=3 ctermbg=NONE
 
+
+" watch out for overrides of 
+" https://vimdoc.sourceforge.net/htmldoc/vimindex.html#g
+nnoremap gj <Plug>(GitGutterNextHunk)
+nnoremap gn <Plug>(GitGutterNextHunk)
+nnoremap gk <Plug>(GitGutterPrevHunk)
+nnoremap ge <Plug>(GitGutterPrevHunk)
+nnoremap ghs <Plug>(GitGutterStageHunk)
+nnoremap ghu <Plug>(GitGutterUndoHunk)
+nnoremap ghd <Plug>(GitGutterPreviewHunk)
+nnoremap ghp <Plug>(GitGutterPreviewHunk)
 " nmap gd :GitGutterDiffOrig<CR>
+" autocmd FileType fugitiveblame nmap <buffer> q gq
 
-nnoremap <leader>gg :Git<CR>
+" fugitive
+nnoremap <leader>g :Git<Space>
+nnoremap <leader>g<Space> :Git<Space>
+nnoremap <leader>gd :Gdiff<CR>
+nnoremap <leader>gl :Git log<CR>
+nnoremap <leader>gs :Git<CR>
+
+" eclim
+nnoremap <Leader>na :Ant<Space>
+nnoremap <Leader>na<Space> :Ant<Space>
+nnoremap <Leader>naa :Ant<CR>
+nnoremap <Leader>nc :JavaClasspath<CR>
+nnoremap <Leader>nf :JavaFormat<CR>
+nnoremap <Leader>ng :JavaSearch -x declarations<CR>
+nnoremap <Leader>ni :JavaImport<CR>
+nnoremap <Leader>no :JavaImportOrganize<CR>
+nnoremap <Leader>nv :Validate<CR>
 
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
@@ -76,15 +153,16 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver'
   \ ]
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-surround'
 Plug 'airblade/vim-gitgutter'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
+Plug 'easymotion/vim-easymotion'
+
 call plug#end()
-
-
-
 
 
 
@@ -122,10 +200,17 @@ autocmd BufReadPost *
   \ |   exe "normal! g`\""
   \ | endif
 
+let g:airline_theme='dark_minimal'
+let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 " show tab number instead of number of splits inside tab
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_section_y = '' " hide encoding
+let g:airline_symbols = {}
+let g:airline_symbols.modified = '*'
+" let g:airline_symbols.linenr = ' '
+let g:airline_section_z = '%l/%L:%v (%p%%)'
 
 
