@@ -1,18 +1,16 @@
 set nocompatible
 let mapleader="-"
+nmap <space> -
 
 " APPEARANCE
 syntax enable
 colorscheme torte
-" let black be black
-"let g:dracula_colorterm = 0
-"packadd! dracula
-"colorscheme dracula
-
+filetype plugin on
 " show tabs (→)
 set listchars=tab:›\ ,trail:·
 " •
 set invlist
+hi SpecialKey ctermfg=102
 " toggle tab display
 noremap <Leader><Tab> :set invlist<CR>
 " show line numbers
@@ -20,11 +18,7 @@ set number relativenumber
 set backspace=indent,eol,start
 " gitgutter
 set signcolumn=number
-highlight GitGutterAdd ctermfg=2
-highlight GitGutterChange ctermfg=3
-highlight GitGutterDelete ctermfg=1
 " let g:gitgutter_sign_removed = '-'
-highlight GitGutterChangeDelete ctermfg=4
 highlight DiffAdd ctermfg=2 ctermbg=NONE
 highlight DiffChange ctermfg=3 ctermbg=NONE
 highlight DiffDelete ctermfg=1 ctermbg=NONE
@@ -45,12 +39,21 @@ let g:airline_section_z = '%l/%L:%v (%p%%)'
 
 
 " INTERACTION
-set showcmd " show incomplete leader commands
+" show incomplete leader commands
+set showcmd
+" open help in new tab
+nnoremap <leader>h<space> :tab<space>help<space>
+" When editing a file, always jump to the last known cursor position.
+autocmd BufReadPost *
+  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
+  \ |   exe "normal! g`\""
+  \ | endif
 "set hlsearch
 set incsearch
 
 
 " EDITING
+filetype indent on
 set tabstop=2
 set shiftwidth=2
 " set expandtab " vimwiki doesn't correctly copy indentation of spaces unless expand is on...
@@ -58,8 +61,23 @@ set copyindent " copy the previous indentation on autoindenting
 set autoindent " always set autoindenting on
 
 set textwidth=80
-set formatoptions-=lo " also break lines that are already too long, but don't add when adding 'o'
-set formatoptions+=a/w " reformat paragraph on any change, but don't extend 1-line comments, and trailing whitespace means paragraph continues
+" autocmd FileType html set formatoptions-=a
+" autocmd FileType html set formatoptions-=t
+autocmd FileType markdown set formatoptions-=a
+autocmd FileType markdown set formatoptions-=t
+
+set formatoptions+=a " automatically reformat paragraphs on any change...
+set formatoptions-=l " ...including lines that are already too long when starting to edit...
+set formatoptions-=t " ...but don't auto-wrap any old text...
+set formatoptions+=c " ...only comments
+set formatoptions+=q " allow 'gq' to format comment lines
+set formatoptions+=w " trailing whitespace means paragraph continues
+
+" autoformat entire file
+nnoremap g= gg=G
+
+" easymotion
+map <Leader> <Plug>(easymotion-prefix)
 
 " COLEMAK
 " https://www.reddit.com/r/Colemak/comments/j98ds1/an_example_of_vim_key_remapping/
@@ -147,37 +165,45 @@ nnoremap gk <Plug>(GitGutterPrevHunk)z.
 nnoremap gJ G<Plug>(GitGutterPrevHunk)z.
 nnoremap gK gg<Plug>(GitGutterNextHunk)z.
 
+" preview/diff unstaged hunk
+nnoremap gp <Plug>(GitGutterPreviewHunk)
+nnoremap g<Space> <Plug>(GitGutterPreviewHunk)
+
 nnoremap gs <Plug>(GitGutterStageHunk)
 " make repeatable
 silent! call repeat#set("\<Plug>(GitGutterStageHunk)", -1)
-nnoremap gu <Plug>(GitGutterUndoHunk)
-nnoremap gp <Plug>(GitGutterPreviewHunk)
-nnoremap g<Space> <Plug>(GitGutterPreviewHunk)
 " stage whole file
 nnoremap gS :Gwrite<CR>
+
+nnoremap gu <Plug>(GitGutterUndoHunk)
 " unstage whole file
 nnoremap gU :Git reset %<CR>
 " actual git checkout --reset
-nnoremap gR :Gread<CR>
+nnoremap gC :Gread<CR>
 
-" auto-hide preview on cursor move 
+" auto-hide preview on cursor move:
 " https://github.com/airblade/vim-gitgutter/issues/369#issuecomment-602464330
 au CursorMoved * if !gitgutter#hunk#in_hunk(line(".")) | pclose | endif
+
+" fugitive
+" preview/diff unstaged file
+nnoremap gP :Gvdiffsplit<CR>
+nnoremap gvu :Gvdiffsplit<CR>
+" preview/diff staging area
+nnoremap gvs :Git diff --staged %<CR>
+nnoremap gvS :Git diff --staged<CR>
 
 " nmap gd :GitGutterDiffOrig<CR>
 " autocmd FileType fugitiveblame nmap <buffer> q gq
 
-" fugitive
 nnoremap <leader>G :Git<CR>
 nnoremap <leader>g :Git<Space>
-nnoremap <leader>g<Space> :Git<Space>
-nnoremap <leader>gd :Gdiff<CR>
-nnoremap <leader>gl :Git log<CR>
-nnoremap <leader>gs :Git<CR>
-nnoremap <leader>gb :Git blame<CR>
-" stage/unstage file
-nnoremap <leader>ga :Git add %<CR>
-nnoremap <leader>gr :Git reset %<CR>
+nnoremap <leader>gc :Git commit<CR>
+nnoremap <leader>ga :Git commit --amend<CR>
+nnoremap g<Space> :Git<Space>
+nnoremap gl :Git log<CR>
+nnoremap gL :Git log %<CR>
+nnoremap gb :Git blame<CR>
 
 " eclim
 nnoremap <Leader>a<CR> :Ant<CR>
