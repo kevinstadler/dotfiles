@@ -1,7 +1,7 @@
 set nocompatible
 let mapleader="-"
 
-" DISPLAY
+" APPEARANCE
 syntax enable
 colorscheme torte
 " let black be black
@@ -10,14 +10,38 @@ colorscheme torte
 "colorscheme dracula
 
 " show tabs (→)
-set listchars=tab:›\ ,trail:•
+set listchars=tab:›\ ,trail:·
+" •
 set invlist
 " toggle tab display
 noremap <Leader><Tab> :set invlist<CR>
+" show line numbers
 set number relativenumber
 set backspace=indent,eol,start
-filetype plugin on
-filetype plugin indent on
+" gitgutter
+set signcolumn=number
+highlight GitGutterAdd ctermfg=2
+highlight GitGutterChange ctermfg=3
+highlight GitGutterDelete ctermfg=1
+" let g:gitgutter_sign_removed = '-'
+highlight GitGutterChangeDelete ctermfg=4
+highlight DiffAdd ctermfg=2 ctermbg=NONE
+highlight DiffChange ctermfg=3 ctermbg=NONE
+highlight DiffDelete ctermfg=1 ctermbg=NONE
+highlight DiffText ctermfg=3 ctermbg=NONE
+" airline
+let g:airline_theme='dark_minimal'
+let g:airline#extensions#branch#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+" show tab number instead of number of splits inside tab
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#tab_nr_type = 1
+let g:airline#extensions#whitespace#enabled = 0
+let g:airline_section_y = '' " hide encoding
+let g:airline_symbols = {}
+let g:airline_symbols.modified = '*'
+" let g:airline_symbols.linenr = ' '
+let g:airline_section_z = '%l/%L:%v (%p%%)'
 
 
 " INTERACTION
@@ -100,71 +124,74 @@ nnoremap <C-P> :! pdfreport %<CR>
 nnoremap <C-O> :! open %
 
 " edit/source .vimrc
-:nnoremap <leader>ev :tabedit $MYVIMRC<cr>
-:nnoremap <leader>iv :source $MYVIMRC<cr>
-
-" gitgutter
-set signcolumn=number
-highlight GitGutterAdd ctermfg=2
-highlight GitGutterChange ctermfg=3
-highlight GitGutterDelete ctermfg=1
-" let g:gitgutter_sign_removed = '-'
-highlight GitGutterChangeDelete ctermfg=4
-highlight DiffAdd ctermfg=2 ctermbg=NONE
-highlight DiffChange ctermfg=3 ctermbg=NONE
-highlight DiffDelete ctermfg=1 ctermbg=NONE
-highlight DiffText ctermfg=3 ctermbg=NONE
+:nnoremap ve :tabedit $MYVIMRC<cr>
+:nnoremap vs :source $MYVIMRC<cr>
 
 
+" DEVELOPING
 " watch out for overrides of 
 " https://vimdoc.sourceforge.net/htmldoc/vimindex.html#g
-nnoremap gj <Plug>(GitGutterNextHunk)
-nnoremap gn <Plug>(GitGutterNextHunk)
-nnoremap gk <Plug>(GitGutterPrevHunk)
-nnoremap ge <Plug>(GitGutterPrevHunk)
-nnoremap ghs <Plug>(GitGutterStageHunk)
-nnoremap ghu <Plug>(GitGutterUndoHunk)
-nnoremap ghd <Plug>(GitGutterPreviewHunk)
-nnoremap ghp <Plug>(GitGutterPreviewHunk)
+
+" gitgutter hunk navigation and staging
+" TODO figure out how to make repeatble with https://github.com/tpope/vim-repeat
+nnoremap gn <Plug>(GitGutterNextHunk)z.
+nnoremap ge <Plug>(GitGutterPrevHunk)z.
+" last hunk in file
+nnoremap gN G<Plug>(GitGutterPrevHunk)z.
+" first hunk in file
+nnoremap gE gg<Plug>(GitGutterNextHunk)z.
+nnoremap gG gg<Plug>(GitGutterNextHunk)z.
+" QWERTY
+nnoremap gj <Plug>(GitGutterNextHunk)z.
+nnoremap gk <Plug>(GitGutterPrevHunk)z.
+nnoremap gJ G<Plug>(GitGutterPrevHunk)z.
+nnoremap gK gg<Plug>(GitGutterNextHunk)z.
+
+nnoremap gs <Plug>(GitGutterStageHunk)
+" make repeatable
+silent! call repeat#set("\<Plug>(GitGutterStageHunk)", -1)
+nnoremap gu <Plug>(GitGutterUndoHunk)
+nnoremap gp <Plug>(GitGutterPreviewHunk)
+nnoremap g<Space> <Plug>(GitGutterPreviewHunk)
+" stage whole file
+nnoremap gS :Gwrite<CR>
+" unstage whole file
+nnoremap gU :Git reset %<CR>
+" actual git checkout --reset
+nnoremap gR :Gread<CR>
+
+" auto-hide preview on cursor move 
+" https://github.com/airblade/vim-gitgutter/issues/369#issuecomment-602464330
+au CursorMoved * if !gitgutter#hunk#in_hunk(line(".")) | pclose | endif
+
 " nmap gd :GitGutterDiffOrig<CR>
 " autocmd FileType fugitiveblame nmap <buffer> q gq
 
 " fugitive
+nnoremap <leader>G :Git<CR>
 nnoremap <leader>g :Git<Space>
 nnoremap <leader>g<Space> :Git<Space>
 nnoremap <leader>gd :Gdiff<CR>
 nnoremap <leader>gl :Git log<CR>
 nnoremap <leader>gs :Git<CR>
+nnoremap <leader>gb :Git blame<CR>
+" stage/unstage file
+nnoremap <leader>ga :Git add %<CR>
+nnoremap <leader>gr :Git reset %<CR>
 
 " eclim
-nnoremap <Leader>na :Ant<Space>
-nnoremap <Leader>na<Space> :Ant<Space>
-nnoremap <Leader>naa :Ant<CR>
-nnoremap <Leader>nc :JavaClasspath<CR>
-nnoremap <Leader>nf :JavaFormat<CR>
-nnoremap <Leader>ng :JavaSearch -x declarations<CR>
-nnoremap <Leader>ni :JavaImport<CR>
-nnoremap <Leader>no :JavaImportOrganize<CR>
-nnoremap <Leader>nv :Validate<CR>
-
-call plug#begin()
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = [
-  \ 'coc-tsserver'
-  \ ]
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-surround'
-Plug 'airblade/vim-gitgutter'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
-Plug 'easymotion/vim-easymotion'
-
-call plug#end()
-
-
+nnoremap <Leader>a<CR> :Ant<CR>
+nnoremap <Leader>aa :Ant<CR>
+nnoremap <Leader>a<Space> :Ant<Space>
+nnoremap <Leader>ac :Ant compile<CR>
+nnoremap <Leader>ai :Ant install<CR>
+nnoremap <Leader>ad :Ant dist-slim<CR>
+nnoremap <Leader><Leader>c :JavaClasspath<CR>
+nnoremap <Leader><Leader>f :JavaFormat<CR>
+nnoremap <Leader><Leader>g :JavaSearch -x declarations<CR>
+nnoremap <Leader><Leader>i :JavaImport<CR>
+nnoremap <Leader><Leader>o :JavaImportOrganize<CR>
+nnoremap <Leader><Leader>v :Validate<CR>
 
 " CoC: https://github.com/neoclide/coc.nvim#example-vim-configuration
 " " Add `:OR` command for organize imports of the current buffer
@@ -191,26 +218,22 @@ endfunction
 nmap <leader>do <Plug>(coc-codeaction)
 
 
+" PLUGINS
+call plug#begin()
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+let g:coc_global_extensions = [
+  \ 'coc-tsserver'
+  \ ]
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-sleuth' " auto indent detection
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
+Plug 'airblade/vim-gitgutter'
+Plug 'ludovicchabant/vim-gutentags'
+" Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
+Plug 'easymotion/vim-easymotion'
 
-
-
-" When editing a file, always jump to the last known cursor position.
-autocmd BufReadPost *
-  \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
-  \ |   exe "normal! g`\""
-  \ | endif
-
-let g:airline_theme='dark_minimal'
-let g:airline#extensions#branch#enabled = 1
-let g:airline#extensions#tabline#enabled = 1
-" show tab number instead of number of splits inside tab
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#tabline#tab_nr_type = 1
-let g:airline#extensions#whitespace#enabled = 0
-let g:airline_section_y = '' " hide encoding
-let g:airline_symbols = {}
-let g:airline_symbols.modified = '*'
-" let g:airline_symbols.linenr = ' '
-let g:airline_section_z = '%l/%L:%v (%p%%)'
-
-
+call plug#end()
