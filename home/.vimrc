@@ -17,6 +17,7 @@ noremap <Leader><Tab> :set invlist<CR>
 set number relativenumber
 set backspace=indent,eol,start
 " gitgutter
+set updatetime=100
 set signcolumn=number
 " let g:gitgutter_sign_removed = '-'
 highlight DiffAdd ctermfg=2 ctermbg=NONE
@@ -107,39 +108,69 @@ nnoremap dt dt|
 nnoremap vt vt|
 nnoremap yt yt|
 
-" MY NAV
-"nmap q <leader>ww
-"nmap s <leader>t+
-" execute on \\
-nnoremap <leader><leader> :!"%:p"<Enter>
+" backspace and delete in normal mode
+nnoremap <BS> X<Esc>
+nnoremap <Delete> x<Esc>
+" delete word
+nnoremap <C-BS> <C-w>
+inoremap <C-BS> <C-w>
+
+" NAVIGATION
+
+" always leave cursor at the end after paste
+nnoremap p gp
+" make gm go to middle of *text*
+nnoremap gm gM
+
+" Shift+Arrow selection in visual mode
+" noremap <Esc>[5~ v<Up>
+" noremap <Esc>[6~ v<Down>
+" vnoremap <Esc>[5~ <Up>
+" vnoremap <Esc>[6~ <Down>
+" noremap <S-Left> v<Left>
+" noremap <S-Right> v<Right>
+
+" scrolling (Ctrl+key for cursor, Ctrl+Shift+key for just screen)
+nnoremap <Esc>[6~ <C-d>z.
+nnoremap <Esc>[5~ <C-u>z.
+"colemak
+nnoremap <C-m> ^
+nnoremap <C-n> <C-d>z.
+" nnoremap <C-N> <C-e>
+nnoremap <C-e> <C-u>z.
+" nnoremap <C-E> <C-y>
+nnoremap <C-i> $
+"qwerty
+nnoremap <C-h> ^
+nnoremap <C-j> <C-d>z.
+nnoremap <C-k> <C-u>z.
+nnoremap <C-l> $
+
+nnoremap <leader>w :w<Enter>
+nnoremap <leader>W :wq<Enter>
 nnoremap <leader>q :q<Enter>
 nnoremap <leader>Q :q!<Enter>
-nnoremap <leader>w :w<Enter>
-nnoremap <leader>ww :w<Enter>
-nnoremap <leader>wq :wq<Enter>
+
+" disable ex mode (ZZ and ZQ still work for closing)
+" nnoremap Q <nop>
+nnoremap Q :q<Enter>
+nnoremap <C-q> :q<Enter>
+" nnoremap <C-s> :w<Enter>
 
 " alternatively: !./%<Enter>
-nnoremap <leader><Space> :!"%:p"<Enter>
+nnoremap <leader><CR> :!"%:p"<Enter>
 
 " 'untab' shortcut, now ignored/overridden by supertab...
 inoremap <S-Tab> <C-D>
 " save file https://vi.stackexchange.com/questions/8895/how-to-map-a-shortcut-for-saving-the-file/8897
 inoremap <C-S> <Esc>:update<CR>gi
 
-" disable ex mode (ZZ and ZQ still work for closing)
-nnoremap Q <nop>
-
 " tabline and tab navigation
-" nnoremap t0 :tabfirst<CR>
-" nnoremap t$ :tablast<CR>
-" nnoremap tt :tabedit<Space>
 nnoremap <leader>t :tabedit<Space>
-nnoremap <leader>f :tabedit<Space>
-nnoremap TT :tabclose<CR>
 nnoremap <Tab> :tabnext<CR>
 nnoremap <S-Tab> :tabprev<CR>
-nnoremap <C-P> :! pdfreport %<CR>
-nnoremap <C-O> :! open %
+" nnoremap <C-P> :! pdfreport %<CR>
+" nnoremap <C-O> :! open %
 
 " edit/source .vimrc
 :nnoremap ve :tabedit $MYVIMRC<cr>
@@ -166,8 +197,9 @@ nnoremap gJ G<Plug>(GitGutterPrevHunk)z.
 nnoremap gK gg<Plug>(GitGutterNextHunk)z.
 
 " preview/diff unstaged hunk
-nnoremap gp <Plug>(GitGutterPreviewHunk)
 nnoremap g<Space> <Plug>(GitGutterPreviewHunk)
+nnoremap gp <Plug>(GitGutterPreviewHunk)
+nnoremap gP :GitGutterFold<CR>
 
 nnoremap gs <Plug>(GitGutterStageHunk)
 " make repeatable
@@ -176,10 +208,10 @@ silent! call repeat#set("\<Plug>(GitGutterStageHunk)", -1)
 nnoremap gS :Gwrite<CR>
 
 nnoremap gu <Plug>(GitGutterUndoHunk)
+" actual git checkout --reset (but in buffer only)
+nnoremap gU :Gread<CR>
 " unstage whole file
-nnoremap gU :Git reset %<CR>
-" actual git checkout --reset
-nnoremap gC :Gread<CR>
+nnoremap gr :Git restore --staged %<CR>
 
 " auto-hide preview on cursor move:
 " https://github.com/airblade/vim-gitgutter/issues/369#issuecomment-602464330
@@ -187,7 +219,6 @@ au CursorMoved * if !gitgutter#hunk#in_hunk(line(".")) | pclose | endif
 
 " fugitive
 " preview/diff unstaged file
-nnoremap gP :Gvdiffsplit<CR>
 nnoremap gvu :Gvdiffsplit<CR>
 " preview/diff staging area
 nnoremap gvs :Git diff --staged %<CR>
@@ -254,6 +285,7 @@ Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'aymericbeaumet/vim-symlink' " fix fugitive not following symlinks
 Plug 'tpope/vim-sleuth' " auto indent detection
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
