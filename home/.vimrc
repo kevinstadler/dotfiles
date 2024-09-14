@@ -1,6 +1,9 @@
 set nocompatible
 let mapleader="-"
 nmap <space> -
+" enable modifyOtherKeys to distinguish C+letter from C+S+letter
+" let &t_TI = "\<Esc>[>4;2m"
+" let &t_TE = "\<Esc>[>4;m"
 
 " APPEARANCE
 syntax enable
@@ -42,6 +45,11 @@ let g:airline_section_z = '%l/%L:%v (%p%%)'
 " INTERACTION
 " show incomplete leader commands
 set showcmd
+
+" mapping logic:
+" - g... operates on the buffer only
+" - <leader>... operates on external files/git index
+
 " open help in new tab
 nnoremap <leader>h<space> :tab<space>help<space>
 " When editing a file, always jump to the last known cursor position.
@@ -49,8 +57,13 @@ autocmd BufReadPost *
   \ if line("'\"") >= 1 && line("'\"") <= line("$") && &ft !~# 'commit'
   \ |   exe "normal! g`\""
   \ | endif
-"set hlsearch
+" highlight matching patterns
+set hlsearch
+" incremental
 set incsearch
+" ignore case when lowercase, but adhere when search is uppercase
+set ignorecase
+set smartcase
 
 
 " EDITING
@@ -60,12 +73,13 @@ set shiftwidth=2
 " set expandtab " vimwiki doesn't correctly copy indentation of spaces unless expand is on...
 set copyindent " copy the previous indentation on autoindenting
 set autoindent " always set autoindenting on
+set showmatch
 
 set textwidth=80
 " autocmd FileType html set formatoptions-=a
 " autocmd FileType html set formatoptions-=t
-autocmd FileType markdown set formatoptions-=a
-autocmd FileType markdown set formatoptions-=t
+autocmd FileType markdown setlocal formatoptions-=a
+autocmd FileType markdown setlocal formatoptions-=t
 
 set formatoptions+=a " automatically reformat paragraphs on any change...
 set formatoptions-=l " ...including lines that are already too long when starting to edit...
@@ -112,8 +126,8 @@ nnoremap yt yt|
 nnoremap <BS> X<Esc>
 nnoremap <Delete> x<Esc>
 " delete word
-nnoremap <C-BS> <C-w>
-inoremap <C-BS> <C-w>
+" nnoremap <C-BS> <C-w>
+" inoremap <C-BS> <C-w>
 
 " NAVIGATION
 
@@ -173,8 +187,8 @@ nnoremap <S-Tab> :tabprev<CR>
 " nnoremap <C-O> :! open %
 
 " edit/source .vimrc
-:nnoremap ve :tabedit $MYVIMRC<cr>
-:nnoremap vs :source $MYVIMRC<cr>
+nnoremap ve :tabedit $MYVIMRC<cr>
+nnoremap vs :source $MYVIMRC<cr>
 
 
 " DEVELOPING
@@ -199,6 +213,9 @@ nnoremap gK gg<Plug>(GitGutterNextHunk)z.
 " preview/diff unstaged hunk
 nnoremap g<Space> <Plug>(GitGutterPreviewHunk)
 nnoremap gp <Plug>(GitGutterPreviewHunk)
+" auto-hide preview on cursor move:
+" https://github.com/airblade/vim-gitgutter/issues/369#issuecomment-602464330
+au CursorMoved * if !gitgutter#hunk#in_hunk(line(".")) | pclose | endif
 nnoremap gP :GitGutterFold<CR>
 
 nnoremap gs <Plug>(GitGutterStageHunk)
@@ -213,10 +230,6 @@ nnoremap gU :Gread<CR>
 " unstage whole file
 nnoremap gr :Git restore --staged %<CR>
 
-" auto-hide preview on cursor move:
-" https://github.com/airblade/vim-gitgutter/issues/369#issuecomment-602464330
-au CursorMoved * if !gitgutter#hunk#in_hunk(line(".")) | pclose | endif
-
 " fugitive
 " preview/diff unstaged file
 nnoremap gvu :Gvdiffsplit<CR>
@@ -229,9 +242,10 @@ nnoremap gvS :Git diff --staged<CR>
 
 nnoremap <leader>G :Git<CR>
 nnoremap <leader>g :Git<Space>
-nnoremap <leader>gc :Git commit<CR>
-nnoremap <leader>ga :Git commit --amend<CR>
 nnoremap g<Space> :Git<Space>
+nnoremap <leader>gcc :Git commit<CR>
+nnoremap <leader>gca :Git commit --amend<CR>
+nnoremap <leader>gco :Git checkout -- %<CR>
 nnoremap gl :Git log<CR>
 nnoremap gL :Git log %<CR>
 nnoremap gb :Git blame<CR>
@@ -250,10 +264,13 @@ nnoremap <Leader><Leader>i :JavaImport<CR>
 nnoremap <Leader><Leader>o :JavaImportOrganize<CR>
 nnoremap <Leader><Leader>v :Validate<CR>
 
+" let b:ale_fixers = ['prettier', 'standard']
+
 " CoC: https://github.com/neoclide/coc.nvim#example-vim-configuration
 " " Add `:OR` command for organize imports of the current buffer
 command! -nargs=0 OR   :call     CocActionAsync('runCommand', 'editor.action.organizeImport')
-" To make coc.nvim format your code on <cr>:
+" To make coc.nvim format your code on <cr>: -- this one is necessary but not 
+" sufficient??
 inoremap <silent><expr> <cr> coc#pum#visible() ? coc#_select_confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 " Use tab for trigger completion with characters ahead and navigate
@@ -281,6 +298,20 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 let g:coc_global_extensions = [
   \ 'coc-tsserver'
   \ ]
+
+" let g:coc_filetypes_enable = ['js', 'json', 'sh', 'py', 'ts', 'vim']
+" function! s:disable_coc_for_type()
+"   if index(g:coc_filetypes_enable, &filetype) == -1
+"     :silent! CocDisable
+"   else
+"     :silent! CocEnable
+"   endif
+" endfunction
+
+" augroup CocGroup
+"  autocmd!
+"  autocmd BufNew,BufEnter,BufAdd,BufCreate * call s:disable_coc_for_type()
+" augroup end
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 Plug 'tpope/vim-commentary'
@@ -290,8 +321,14 @@ Plug 'tpope/vim-sleuth' " auto indent detection
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'airblade/vim-gitgutter'
-Plug 'ludovicchabant/vim-gutentags'
+" Plug 'ludovicchabant/vim-gutentags'
+
 " Plug 'kristijanhusak/vim-js-file-import', {'do': 'npm install'}
 Plug 'easymotion/vim-easymotion'
 
+Plug 'michaeljsmith/vim-indent-object'
+" Plug 'dense-analysis/ale'
+
 call plug#end()
+
+

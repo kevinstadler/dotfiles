@@ -45,3 +45,5 @@ export PATH="/usr/local/opt/openjdk@17/bin:$PATH"
 export CPPFLAGS="-I/usr/local/opt/openjdk@17/include"
 
 export PATH="$HOME/bin:$PATH"
+export PATH="$HOME/.local/bin:$PATH"
+export PATH="$PATH:/Applications/QGIS.app/Contents/MacOS/bin:/usr/local/anaconda3/bin/"

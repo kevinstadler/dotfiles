@@ -30,7 +30,9 @@ rm -rf adobe-clean-cdnfonts*
 
 
 # 3d fabrication
-brew install --cask openscad prusaslicer ultimaker-cura
+brew install --cask openscad ultimaker-cura
+# for 2.5.2 without 'floating bridge anchor' bug
+brew install --cask https://raw.githubusercontent.com/Homebrew/homebrew-cask/da8d6bab98733991791c870b4c028b4e8a664644/Casks/prusaslicer.rb
 brew install --cask kicad
 brew install --cask freecad
 brew install --cask blender
@@ -49,6 +51,8 @@ brew install --cask thonny
 brew install node
 brew install --cask android-studio
 brew install ant
+brew install --cask wireshark
+
 
 brew install --cask android-platform-tools
 
@@ -64,7 +68,8 @@ brew install avr-gcc arm-gcc-bin
 brew tap homebrew/cask-drivers
 brew install --cask qmk-toolbox
 ## arduino: manually for 2.* version
-#brew install --cask processing
+brew install --cask processing
+brew install --cask android-sdk
 
 # vim + plugins
 #brew install vim

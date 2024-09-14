@@ -7,7 +7,7 @@ alias lh="ll -h"
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
-export PATH="$HOME/bin:$HOME/.local/bin:$PATH:/Applications/QGIS.app/Contents/MacOS/bin"
+export PATH="$HOME/bin:$HOME/.local/bin:$PATH:/Applications/QGIS.app/Contents/MacOS/bin:/usr/local/anaconda3/bin/"
 
 # To enable the `homeshick cd <CASTLE>` command, you need to
 #   `export HOMESHICK_DIR=/usr/local/opt/homeshick`
